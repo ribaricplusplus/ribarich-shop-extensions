@@ -1,0 +1,7 @@
+{
+	"core": "WordPress/WordPress#5.9-branch",
+	"phpVersion": "7.4",
+	"mappings": {
+		"wp-content/plugins/ribarich-wp-dependencies-checker-test-plugins": "./tests/plugins"
+	}
+}
