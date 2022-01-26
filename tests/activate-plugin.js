@@ -3,10 +3,10 @@ const {
 	activateTheme,
 } = require( '@wordpress/e2e-test-utils' );
 
-const slug = 'woocommerce-nft-downloads';
+const slug = 'ribarich-shop-extensions';
 
 beforeAll( async () => {
 	await activatePlugin( 'woocommerce' );
-	await activateTheme( 'jot-shop' );
+	await activateTheme( 'storefront' );
 	await activatePlugin( slug );
 } );

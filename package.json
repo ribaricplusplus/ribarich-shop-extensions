@@ -35,5 +35,5 @@
 		"glob-all": "3.2.1",
 		"prettier": "npm:wp-prettier@2.2.1-beta-1",
 		"sass": "1.45.0"
-	},
+	}
 }

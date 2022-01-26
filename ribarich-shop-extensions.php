@@ -14,6 +14,7 @@ define( 'RIBARICH_SE_FILE', __FILE__ );
 
 require 'vendor/autoload.php';
 require 'src/functions.php';
+require 'src/container.php';
 
 try {
 	\Ribarich\SE\init();

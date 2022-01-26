@@ -2,6 +2,13 @@
 	"core": "WordPress/WordPress#5.9-branch",
 	"phpVersion": "7.4",
 	"mappings": {
-		"wp-content/plugins/ribarich-wp-dependencies-checker-test-plugins": "./tests/plugins"
-	}
+		"wp-content/plugins/ribarich-shop-extensions-test-plugins": "./tests/plugins"
+	},
+	"plugins": [
+		"https://downloads.wordpress.org/plugin/woocommerce.6.0.0.zip",
+		"."
+	],
+	"themes": [
+		"https://downloads.wordpress.org/theme/storefront.3.9.1.zip"
+	]
 }

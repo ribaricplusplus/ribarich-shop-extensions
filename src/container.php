@@ -3,7 +3,7 @@
 namespace Ribarich\SE;
 
 use DI\ContainerBuilder;
-use DI\Container
+use DI\Container;
 
 function get_container(): Container {
 	static $container;
@@ -13,12 +13,9 @@ function get_container(): Container {
 	}
 
 	$builder = new ContainerBuilder();
-	$builder->add_definitions(
-		array(
-			// TODO: Interface definitions go here.
-		)
-	);
-
+	$builder->addDefinitions(array(
+		'WooCommerce' => function() { return \WC(); },
+	));
 	$container = $builder->build();
 	return $container;
 }
