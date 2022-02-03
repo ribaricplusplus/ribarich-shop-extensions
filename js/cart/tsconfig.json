@@ -1,0 +1,10 @@
+{
+	"extends": "../../tsconfig.base.json",
+	"compilerOptions": {
+		"declarationDir": "build-types",
+		"rootDir": ".",
+	},
+	"include": [
+		"**/*"
+	]
+}

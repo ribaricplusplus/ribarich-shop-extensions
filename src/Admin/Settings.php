@@ -29,8 +29,7 @@ class Settings {
 				'default' => '0',
 				'desc_tip' => true,
 				'sanitize_callback' => 'sanitize_text_field'
-			)
-;
+			);
 	}
 
 	public function init_shipping_method_ids() {

@@ -3,14 +3,25 @@
 namespace Ribarich\SE;
 
 use Automattic\Jetpack\Constants;
+use DI\Container;
 
 class Main {
 	public $admin;
 
+	public $fees;
+
+	public $container;
+
+	public $scripts;
+
 	public function __construct(
-		Admin $admin
+		Admin $admin,
+		Scripts $scripts,
+		Container $container
 	) {
 		$this->admin = $admin;
+		$this->container = $container;
+		$this->scripts = $scripts;
 	}
 
 	public function init() {
@@ -26,6 +37,18 @@ class Main {
 		}
 
 		$this->admin->complete_init();
+		$this->scripts->init();
+
+		\add_action( 'init', array( $this, 'complete_init' ) );
+	}
+
+	/**
+	 * Complete initialization after other WordPress plugins have loaded so that
+	 * we can access their classes, functions, etc.
+	 */
+	public function complete_init() {
+		$this->fees = $this->container->get( Fees::class );
+		$this->fees->init();
 	}
 
 	public function handle_error( string $message = '', string $name = 'initialization_failed' ) {

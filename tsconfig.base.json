@@ -1,0 +1,19 @@
+{
+	"compilerOptions": {
+		"target": "esnext",
+		"module": "esnext",
+		"emitDeclarationOnly": true,
+		"declaration": true,
+		"declarationMap": true,
+		"strict": true,
+		"noUnusedLocals": true,
+		"noUnusedParameters": true,
+		"noImplicitAny": false,
+		"esModuleInterop": false,
+		"resolveJsonModule": true,
+		"composite": true,
+		"moduleResolution": "node",
+		"jsx": "preserve",
+		"types": []
+	}
+}
