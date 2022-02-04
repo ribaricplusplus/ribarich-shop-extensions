@@ -18,6 +18,6 @@ require 'src/container.php';
 
 try {
 	\Ribarich\SE\init();
-} catch( \Ribarich\SE\Initialization_Exception $e ) {
+} catch ( \Ribarich\SE\Initialization_Exception $e ) {
 	// Just don't fail completely.
 }

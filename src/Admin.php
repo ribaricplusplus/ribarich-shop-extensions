@@ -28,7 +28,7 @@ class Admin {
 		Admin\Notices $notices,
 		Container $container
 	) {
-		$this->notices = $notices;
+		$this->notices   = $notices;
 		$this->container = $container;
 	}
 

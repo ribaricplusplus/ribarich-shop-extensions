@@ -19,9 +19,9 @@ class Main {
 		Scripts $scripts,
 		Container $container
 	) {
-		$this->admin = $admin;
+		$this->admin     = $admin;
 		$this->container = $container;
-		$this->scripts = $scripts;
+		$this->scripts   = $scripts;
 	}
 
 	public function init() {

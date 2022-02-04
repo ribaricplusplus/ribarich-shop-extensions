@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Ribarich\SE;
 
@@ -10,21 +11,66 @@ class Fees {
 	public $fees;
 
 	public function init() {
-		add_action( 'woocommerce_cart_calculate_fees', array( $this, 'add_insurance_fee' ) );
-		add_action( 'woocommerce_load_cart_from_session', array( $this, 'load_fees_from_session' ) );
-		add_action( 'woocommerce_cart_emptied', array( $this, 'destroy_fees_session' ) );
-		add_action( 'woocommerce_cart_contents', array( $this, 'render_ui' ) );
-		add_action( 'woocommerce_update_cart_action_cart_updated', array( $this, 'cart_update' ) );
+		\add_action( 'woocommerce_cart_calculate_fees', array( $this, 'add_insurance_fee' ) );
+		\add_action( 'woocommerce_load_cart_from_session', array( $this, 'load_fees_from_session' ) );
+		\add_action( 'woocommerce_cart_emptied', array( $this, 'destroy_fees_session' ) );
+		\add_action( 'woocommerce_cart_contents', array( $this, 'render_ui' ) );
+		\add_action( 'woocommerce_update_cart_action_cart_updated', array( $this, 'cart_update' ) );
 	}
 
 	public function __construct(
 		\WooCommerce $wc
 	) {
-		$this->wc = $wc;
+		$this->wc       = $wc;
+		$this->cart     = $this->wc->cart;
+		$this->shipping = $this->wc->shipping();
 	}
 
 	public function destroy_fees_session() {
 		$this->wc->session->set( 'ribarich_se_fees', null );
+	}
+
+	/**
+	 * Calculates shipping insurance from cart and shipping information.
+	 *
+	 * @throws \Exception
+	 */
+	public function calculate_shipping_insurance(): float {
+		$packages = $this->shipping->get_packages();
+		$total    = 0;
+
+		foreach ( $packages as $package ) {
+			if ( empty( $package['rates'] ) ) {
+				continue;
+			}
+
+			$rate                          = current( $package['rates'] );
+
+			if ( ! is_a( $rate, 'WC_Shipping_Rate' ) ) {
+				throw new \Exception();
+			}
+
+			$method                        = \WC_Shipping_Zones::get_shipping_method( $rate->get_instance_id() );
+			$shipping_insurance_percentage = (int) $method->get_option( 'ribarich_se_shipping_insurance' );
+
+			if ( ! $shipping_insurance_percentage ) {
+				continue;
+			}
+
+			$raw_percentage = $shipping_insurance_percentage / 100;
+			$shipping_cost  = array_sum(
+				array_map(
+					function( $rate ) {
+						return $rate->get_cost();
+					},
+					$package['rates']
+				)
+			);
+			$insurance      = ( $package['contents_cost'] + $shipping_cost ) * $raw_percentage;
+			$total         += $insurance;
+		}
+
+		return $total;
 	}
 
 	public function get_default_fees() {
@@ -36,6 +82,10 @@ class Fees {
 	}
 
 	function load_fees_from_session() {
+		if ( ! $this->wc->session ) {
+			return;
+		}
+
 		$this->set_fees( $this->wc->session->get( 'ribarich_se_fees', $this->get_default_fees() ) );
 	}
 
@@ -54,7 +104,7 @@ class Fees {
 	}
 
 	public function add_insurance_fee() {
-		if ( is_admin() && ! defined( 'DOING_AJAX' ) ) {
+		if ( \is_admin() && ! defined( 'DOING_AJAX' ) ) {
 			return;
 		}
 
@@ -62,7 +112,13 @@ class Fees {
 			return;
 		}
 
-		$this->wc->cart->add_fee( $this->get_fee_name( 'shipping_insurance' ), 20 );
+		$fee = $this->calculate_shipping_insurance();
+
+		if ( ! $fee ) {
+			return;
+		}
+
+		$this->cart->add_fee( $this->get_fee_name( 'shipping_insurance' ), $fee );
 	}
 
 	/**
@@ -75,7 +131,7 @@ class Fees {
 	 */
 	public function get_fee_name( string $fee_id ) {
 
-		switch( $fee_id ) {
+		switch ( $fee_id ) {
 			case 'shipping_insurance':
 				return __( 'Shipping insurance', 'ribarich_se' );
 		}
@@ -100,9 +156,12 @@ class Fees {
 </tr>
 ';
 
-		$fee_info = \apply_filters( 'ribarich_se_fee_info', array(
-			'shipping_insurance' => __( 'Shipping insurance', 'ribarich_se' )
-		) );
+		$fee_info = \apply_filters(
+			'ribarich_se_fee_info',
+			array(
+				'shipping_insurance' => __( 'Shipping insurance', 'ribarich_se' ),
+			)
+		);
 
 		printf(
 			$template,
