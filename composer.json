@@ -13,16 +13,18 @@
 	},
 	"autoload-dev": {
 		"psr-4": {
-			"Ribarich\\SE\\Tests\\": "tests/phpunit/"
+			"Ribarich\\SE\\Tests\\": "tests/phpunit/",
+			"Automattic\\WooCommerce\\Testing\\Tools\\": "tests/woocommerce/Tools/"
 		}
 	},
 	"require-dev": {
-		"yoast/phpunit-polyfills": "^1.0",
 		"squizlabs/php_codesniffer": "^3.6",
 		"wp-coding-standards/wpcs": "^2.3"
 	},
 	"require": {
 		"php-di/php-di": "^6.3",
-		"automattic/jetpack-constants": "^1.6"
+		"automattic/jetpack-constants": "^1.6",
+		"yoast/phpunit-polyfills": "^1.0.1",
+		"wp-phpunit/wp-phpunit": "^5.9"
 	}
 }
