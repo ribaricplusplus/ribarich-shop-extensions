@@ -2,6 +2,7 @@ const glob = require( 'glob-all' );
 const path = require( 'path' );
 const { execSync } = require( 'child_process' );
 const fs = require( 'fs' );
+const { unlink } = require('fs/promises')
 
 const { getRootDir } = require( '../util' );
 
@@ -9,6 +10,7 @@ const ROOT_DIR = getRootDir();
 
 async function main() {
 	process.chdir( ROOT_DIR );
+	await unlink( './ribarich-shop-extensions.zip' );
 
 	execSync( 'composer install --no-dev', { stdio: 'inherit' } );
 	buildJavaScript();
