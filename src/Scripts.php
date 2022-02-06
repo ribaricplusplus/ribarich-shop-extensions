@@ -16,7 +16,8 @@ class Scripts {
 			'ribarich-se-cart',
 			\plugins_url( 'build/cart.js', \RIBARICH_SE_FILE ),
 			$data['dependencies'],
-			$data['version']
+			$data['version'],
+			false
 		);
 	}
 

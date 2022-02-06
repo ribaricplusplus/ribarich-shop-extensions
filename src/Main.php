@@ -32,6 +32,7 @@ class Main {
 		if ( ! empty( $missing_dependencies ) ) {
 			$names = array_values( $missing_dependencies );
 			$names = implode( ', ', $names );
+			/* translators: %s: Plugin names. */
 			$this->handle_error( sprintf( __( 'Missing plugins: %s', 'ribarich_se' ), $names ) );
 			return;
 		}
@@ -56,8 +57,9 @@ class Main {
 			$message = __( 'Failed to initialize.', 'ribarich_se' );
 		}
 
+		// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_trigger_error
 		trigger_error(
-			$message,
+			$message, // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 			\E_USER_NOTICE
 		);
 

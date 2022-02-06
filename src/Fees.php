@@ -7,7 +7,7 @@ defined( 'ABSPATH' ) || exit;
 
 class Fees {
 
-	/* @var array See defaults in $this->get_default_fees(). */
+	/** @var array See defaults in $this->get_default_fees(). */
 	public $fees;
 
 	public function init() {
@@ -44,10 +44,10 @@ class Fees {
 				continue;
 			}
 
-			$rate                          = current( $package['rates'] );
+			$rate = current( $package['rates'] );
 
 			if ( ! is_a( $rate, 'WC_Shipping_Rate' ) ) {
-				throw new \Exception();
+				throw new \Exception( 'Rate not found.' );
 			}
 
 			$method                        = \WC_Shipping_Zones::get_shipping_method( $rate->get_instance_id() );
@@ -81,7 +81,7 @@ class Fees {
 		);
 	}
 
-	function load_fees_from_session() {
+	public function load_fees_from_session() {
 		if ( ! $this->wc->session ) {
 			return;
 		}
@@ -94,6 +94,7 @@ class Fees {
 	}
 
 	public function cart_update() {
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended
 		if ( empty( $_REQUEST['shipping_insurance'] ) ) {
 			$this->fees['shipping_insurance']['enabled'] = false;
 		} else {
@@ -112,7 +113,12 @@ class Fees {
 			return;
 		}
 
-		$fee = $this->calculate_shipping_insurance();
+		try {
+			$fee = $this->calculate_shipping_insurance();
+		} catch ( \Exception $e ) {
+			handle_exception( $e );
+			return;
+		}
 
 		if ( ! $fee ) {
 			return;
@@ -167,11 +173,12 @@ class Fees {
 			$template,
 			__( 'Shipping insurance', 'ribarich_se' ),
 			$this->is_fee_enabled( 'shipping_insurance' ) ? 'checked' : '',
-			$fee_info['shipping_insurance']
+			\wp_kses_post( $fee_info['shipping_insurance'] )
 		);
 	}
 
 	/**
+	 * @throws \Exception
 	 * @param string $fee
 	 * @return boolean
 	 */
