@@ -16,12 +16,7 @@ class Settings {
 	}
 
 	public function add_shipping_method_settings( $settings ) {
-		$settings['ribarich_se_shipping_insurance'] = $this->get_shipping_insurance_setting();
-		return $settings;
-	}
-
-	public function get_shipping_insurance_setting() {
-		return array(
+		$settings['ribarich_se_shipping_insurance']             = array(
 			'title'             => __( 'Insurance percentage', 'ribarich_se' ),
 			'type'              => 'text',
 			'placeholder'       => '',
@@ -30,6 +25,14 @@ class Settings {
 			'desc_tip'          => true,
 			'sanitize_callback' => 'sanitize_text_field',
 		);
+		$settings['ribarich_se_shipping_insurance_apply_taxes'] = array(
+			'title'       => __( 'Shipping insurance taxable', 'ribarich_se' ),
+			'type'        => 'checkbox',
+			'description' => __( 'Whether taxes should be applied to shipping insurance costs.', 'ribarich_se' ),
+			'desc_tip'    => true,
+		);
+
+		return $settings;
 	}
 
 	public function init_shipping_method_ids() {

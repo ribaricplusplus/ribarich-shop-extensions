@@ -35,7 +35,7 @@ class Fees {
 	 *
 	 * @throws \Exception
 	 */
-	public function calculate_shipping_insurance(): float {
+	public function calculate_shipping_insurance() {
 		$packages = $this->shipping->get_packages();
 		$total    = 0;
 
@@ -50,7 +50,15 @@ class Fees {
 				throw new \Exception( 'Rate not found.' );
 			}
 
-			$method                        = \WC_Shipping_Zones::get_shipping_method( $rate->get_instance_id() );
+			if ( ! $rate->get_instance_id() ) {
+				continue;
+			}
+
+			$method = \WC_Shipping_Zones::get_shipping_method( $rate->get_instance_id() );
+			if ( ! is_a( $method, 'WC_Shipping_Method' ) ) {
+				continue;
+			}
+
 			$shipping_insurance_percentage = (int) $method->get_option( 'ribarich_se_shipping_insurance' );
 
 			if ( ! $shipping_insurance_percentage ) {
@@ -71,6 +79,34 @@ class Fees {
 		}
 
 		return $total;
+	}
+
+	/**
+	 * @throws \Exception
+	 */
+	public function get_chosen_shipping_method() {
+		$packages = $this->shipping->get_packages();
+		if ( empty( $packages ) ) {
+			return false;
+		}
+		$package = current( $packages );
+
+		$rate = current( $package['rates'] );
+		if ( ! is_a( $rate, 'WC_Shipping_Rate' ) ) {
+			return false;
+		}
+
+		if ( ! $rate->get_instance_id() ) {
+			return false;
+		}
+
+		$method = \WC_Shipping_Zones::get_shipping_method( $rate->get_instance_id() );
+
+		if ( ! is_a( $method, 'WC_Shipping_Method' ) ) {
+			throw new \Exception( 'Shipping method not found.' );
+		}
+
+		return $method;
 	}
 
 	public function get_default_fees() {
@@ -115,16 +151,20 @@ class Fees {
 
 		try {
 			$fee = $this->calculate_shipping_insurance();
+
+			$shipping_method = $this->get_chosen_shipping_method();
+
+			if ( ! $fee ) {
+				return;
+			}
+
+			$taxable = (bool) $shipping_method->get_option( 'ribarich_se_shipping_insurance_apply_taxes' );
+
+			$this->cart->add_fee( $this->get_fee_name( 'shipping_insurance' ), $fee, $taxable );
 		} catch ( \Exception $e ) {
 			handle_exception( $e );
 			return;
 		}
-
-		if ( ! $fee ) {
-			return;
-		}
-
-		$this->cart->add_fee( $this->get_fee_name( 'shipping_insurance' ), $fee );
 	}
 
 	/**

@@ -2,7 +2,7 @@ const glob = require( 'glob-all' );
 const path = require( 'path' );
 const { execSync } = require( 'child_process' );
 const fs = require( 'fs' );
-const { unlink } = require('fs/promises')
+const { unlink } = require( 'fs/promises' );
 
 const { getRootDir } = require( '../util' );
 
