@@ -3,7 +3,9 @@ const path = require( 'path' );
 const { execSync } = require( 'child_process' );
 const fs = require( 'fs' );
 
-const ROOT_DIR = path.join( __dirname, '../..' );
+const { getRootDir } = require( '../util' );
+
+const ROOT_DIR = getRootDir();
 
 async function main() {
 	process.chdir( ROOT_DIR );
@@ -25,7 +27,7 @@ async function main() {
 		.filter( ( file ) => ! isDirectory( file ) )
 		.join( '\n' );
 
-	execSync( 'zip -@ woocommerce-nft-downloads', { input: files } );
+	execSync( 'zip -@ ribarich-shop-extensions', { input: files } );
 }
 
 function buildJavaScript() {
