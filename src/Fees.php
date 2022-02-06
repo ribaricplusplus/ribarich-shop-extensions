@@ -154,9 +154,9 @@ class Fees {
 				<input id="ribarich-se-input-shipping-insurance" type="checkbox" name="shipping_insurance" value="1" %2$s/>
 				<label for="ribarich-se-input-shipping-insurance">%1$s</label>
 			</div>
-			<div class="ribarich-se-fee__info">
+			<p class="ribarich-se-fee__info">
 				%3$s
-			</div>
+			</p>
 		</div>
 	</td>
 </tr>
