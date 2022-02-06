@@ -26,7 +26,7 @@
 	"author": "",
 	"license": "ISC",
 	"devDependencies": {
-		"@ribarich/wp-env-2": "1.2.1",
+		"@ribarich/wp-env-2": "^1.2.2",
 		"@testing-library/dom": "8.11.1",
 		"@testing-library/jest-dom": "5.16.1",
 		"@wordpress/e2e-test-utils": "5.4.10",
