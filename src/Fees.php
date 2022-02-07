@@ -171,7 +171,7 @@ class Fees {
 	 * WooCommerce uses fee name to identify a fee... Must make sure it's
 	 * consistent everywhere.
 	 *
-	 * Valid $fee_id is anything that is the key of the $this->fees array.
+	 * Valid $fee_id is anything that is the a of the $this->fees array.
 	 *
 	 * @throws \Exception
 	 */

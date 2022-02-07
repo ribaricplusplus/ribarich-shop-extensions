@@ -1,6 +1,9 @@
 <?php
+declare(strict_types=1);
 
 namespace Ribarich\SE;
+
+defined( 'ABSPATH' ) || exit;
 
 use Automattic\Jetpack\Constants;
 use DI\Container;
