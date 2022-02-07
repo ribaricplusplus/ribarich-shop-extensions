@@ -4,7 +4,7 @@
  * Description: Various WooCommerce extensions.
  * Requires at least: 5.8
  * Requires PHP: 7.3
- * Version: 0.1.0
+ * Version: 0.1.1
  * Author: Bruno Ribaric
  * Author URI: https://ribarich.me/
  * Text Domain: ribarich_se
