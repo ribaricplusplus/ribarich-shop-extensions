@@ -1,5 +1,5 @@
 {
-	"core": "WordPress/WordPress#5.9-branch",
+	"core": "WordPress/WordPress",
 	"mappings": {
 		"wp-content/plugins/ribarich-shop-extensions-test-plugins": "./tests/plugins"
 	},
