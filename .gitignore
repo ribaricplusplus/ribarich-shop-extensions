@@ -32,3 +32,4 @@ phpunit-watcher.yml
 .vscode/
 secrets.php
 *.zip
+package-lock.json

@@ -4,8 +4,8 @@
 		"wp-content/plugins/ribarich-shop-extensions-test-plugins": "./tests/plugins"
 	},
 	"plugins": [
-		"https://downloads.wordpress.org/plugin/woocommerce.6.0.0.zip",
+		"https://downloads.wordpress.org/plugin/woocommerce.7.1.1.zip",
 		"."
 	],
-	"themes": [ "https://downloads.wordpress.org/theme/storefront.3.9.1.zip" ]
+	"themes": [ "https://downloads.wordpress.org/theme/storefront.4.2.0.zip" ]
 }
